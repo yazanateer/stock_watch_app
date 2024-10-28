@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "83500888337",
+    "project_id": "stockwatchapp-6ae97",
+    "storage_bucket": "stockwatchapp-6ae97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83500888337:android:2b9d0a2af5fa032c9b5cb0",
+        "android_client_info": {
+          "package_name": "com.example.stockwatchapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmdUpL2YFqIjZaVR3w6HiJAZL6-SFl6Hw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
