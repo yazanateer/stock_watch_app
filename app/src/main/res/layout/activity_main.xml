@@ -17,6 +17,18 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp" />
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stockRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/welcomeMessage"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="60dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_stock" />
+
+
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
