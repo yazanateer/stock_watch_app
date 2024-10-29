@@ -14,6 +14,10 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.view.MenuItem
+import android.view.View
+import android.widget.PopupMenu
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,14 +38,17 @@ class MainActivity : AppCompatActivity() {
         binding.stockRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.stockRecyclerView.adapter = stockAdapter
 
+
+
+        binding.menuIcon.setOnClickListener {
+            showPopupMenu(it)
+        }
+
+
+
         fetchMultipleStocks(listOf("AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NFLX", "FB", "BRK.A", "JPM", "V"))
 
-        binding.logoutButton.setOnClickListener {
-            auth.signOut()
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+
     }
 
     private fun fetchMultipleStocks(symbols: List<String>) {
@@ -93,7 +100,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(this, view)
+        popupMenu.menuInflater.inflate(R.menu.menu_main, popupMenu.menu)
 
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_logout -> {
+                    auth.signOut()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        popupMenu.show()
+    }
 
 
 }
