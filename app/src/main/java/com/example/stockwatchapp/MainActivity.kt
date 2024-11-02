@@ -17,6 +17,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var stockAdapter: StockAdapter
     private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
 
     private val apiKey = "283c705eb0mshd89645784f48dddp11f3d4jsnde4b5d990cda"
 
@@ -34,21 +38,54 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
-        stockAdapter = StockAdapter(emptyList())
+        database = FirebaseDatabase.getInstance().reference
+
+        // Pass the lambda to handle favorite icon clicks
+        stockAdapter = StockAdapter(emptyList()) { symbol ->
+            addToFavorites(symbol)
+        }
+
+
+
+
         binding.stockRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.stockRecyclerView.adapter = stockAdapter
-
-
 
         binding.menuIcon.setOnClickListener {
             showPopupMenu(it)
         }
 
+        binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> true
+                R.id.nav_favorite -> {
+                    val intent = Intent(this, FavoriteActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_chart -> true
+                R.id.nav_news -> true
+                else -> false
+            }
+        }
 
 
         fetchMultipleStocks(listOf("AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NFLX", "FB", "BRK.A", "JPM", "V"))
+    }
 
+    private fun addToFavorites(symbol: String) {
+        val userId = auth.currentUser?.uid ?: return
 
+        // Add the stock symbol to the user's favoriteStocks list
+        val favoriteStockRef = database.child("users").child(userId).child("favoriteStocks").child(symbol)
+
+        favoriteStockRef.setValue(true)
+            .addOnSuccessListener {
+                Log.d("MainActivity", "Added $symbol to favorites")
+            }
+            .addOnFailureListener { e ->
+                Log.e("MainActivity", "Failed to add $symbol to favorites", e)
+            }
     }
 
     private fun fetchMultipleStocks(symbols: List<String>) {
@@ -59,7 +96,6 @@ class MainActivity : AppCompatActivity() {
                 .build()
 
             val stockApi = retrofit.create(StockApi::class.java)
-
             val stockList = mutableListOf<Stock>()
 
             val requests = symbols.map { symbol ->
@@ -94,7 +130,12 @@ class MainActivity : AppCompatActivity() {
             val results = requests.awaitAll().filterNotNull()
 
             withContext(Dispatchers.Main) {
-                stockAdapter = StockAdapter(results)
+                stockAdapter = StockAdapter(results) { symbol ->
+                    addToFavorites(symbol)
+                }
+
+
+
                 binding.stockRecyclerView.adapter = stockAdapter
             }
         }
@@ -116,9 +157,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
         popupMenu.show()
     }
-
-
 }

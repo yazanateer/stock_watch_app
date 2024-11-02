@@ -52,6 +52,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-database-ktx:20.0.5")
 
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
