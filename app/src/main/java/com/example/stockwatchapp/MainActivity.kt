@@ -1,5 +1,6 @@
 package com.example.stockwatchapp
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -64,7 +65,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_chart -> true
-                R.id.nav_news -> true
+                R.id.nav_news -> {
+                    val intent = Intent(this, NewsActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
                 else -> false
             }
         }

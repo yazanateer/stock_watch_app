@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Thumbnail Image -->
+    <ImageView
+        android:id="@+id/newsThumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_error" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/newsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/newsThumbnail"
+        android:text="News Title"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black" />
+
+    <!-- Summary -->
+    <TextView
+        android:id="@+id/newsSummary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newsTitle"
+        android:layout_toEndOf="@id/newsThumbnail"
+        android:layout_marginTop="4dp"
+        android:text="This is a brief summary of the news item."
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
+    <!-- Publish Date -->
+    <TextView
+        android:id="@+id/newsPubDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newsSummary"
+        android:layout_toEndOf="@id/newsThumbnail"
+        android:layout_marginTop="4dp"
+        android:text="2024-11-02"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray" />
+
+
+</RelativeLayout>
