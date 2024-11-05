@@ -1,5 +1,6 @@
 package com.example.stockwatchapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +20,7 @@ class NewsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewsBinding
     private lateinit var newsAdapter: NewsAdapter
 
-    private val apiKey = "283c705eb0mshd89645784f48dddp11f3d4jsnde4b5d990cda"
+    private val apiKey = "c216b2c236mshaf28311583808d1p1b1dadjsn91fa5ce0e4be"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +30,32 @@ class NewsActivity : AppCompatActivity() {
         newsAdapter = NewsAdapter(emptyList())
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.newsRecyclerView.adapter = newsAdapter
+
+
+
+        binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_favorite -> {
+                    val intent = Intent(this, FavoriteActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_chart -> {
+                    val intent = Intent(this, ChartActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_news -> true
+                else -> false
+            }
+        }
+
+
 
         fetchNews()
     }

@@ -19,7 +19,7 @@ class FavoriteActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
 
-    private val apiKey = "283c705eb0mshd89645784f48dddp11f3d4jsnde4b5d990cda"
+    private val apiKey = "c216b2c236mshaf28311583808d1p1b1dadjsn91fa5ce0e4be"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +39,17 @@ class FavoriteActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-                R.id.nav_favorite -> true // Stay in FavoriteActivity
-                // Add more navigation items if needed
+                R.id.nav_favorite -> true
+                R.id.nav_chart -> {
+                    val intent = Intent(this, ChartActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_news -> {
+                    val intent = Intent(this, NewsActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
                 else -> false
             }
         }
