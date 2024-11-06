@@ -105,7 +105,8 @@ class FavoriteActivity : AppCompatActivity() {
                             Stock(
                                 symbol = it.symbol ?: "",
                                 price = "$${it.regularMarketPrice?.raw ?: 0.0}",
-                                changePercent = it.regularMarketChangePercent?.fmt ?: "0%"
+                                changePercent = it.regularMarketChangePercent?.fmt ?: "0%",
+                                isFavorite = true
                             )
                         }
                     } catch (e: Exception) {

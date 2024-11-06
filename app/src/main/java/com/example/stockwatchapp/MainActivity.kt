@@ -1,25 +1,20 @@
 package com.example.stockwatchapp
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.stockwatchapp.LoginActivity
-import com.example.stockwatchapp.Stock
-import com.example.stockwatchapp.StockAdapter
-import com.example.stockwatchapp.StockApi
 import com.example.stockwatchapp.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.view.MenuItem
-import android.view.View
-import android.widget.PopupMenu
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,8 +22,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var stockAdapter: StockAdapter
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
-
     private val apiKey = "c216b2c236mshaf28311583808d1p1b1dadjsn91fa5ce0e4be"
+    private val defaultSymbols = listOf("AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NFLX", "FB", "BRK.A", "JPM", "V")
+    private var favoriteStocks = mutableSetOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             emptyList(),
             { symbol -> addToFavorites(symbol) },
             { symbol -> openChartActivity(symbol) },
-            R.layout.item_stock // Pass the layout with empty heart icon
+            R.layout.item_stock
         )
 
         binding.stockRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -75,28 +71,59 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        fetchMultipleStocks(listOf("AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NFLX", "FB", "BRK.A", "JPM", "V"))
+        val searchBar: EditText = findViewById(R.id.searchBar)
+        val searchButton: ImageView = findViewById(R.id.searchButton)
+
+        searchButton.setOnClickListener {
+            val query = searchBar.text.toString().trim()
+            if (query.isNotEmpty()) {
+                fetchMultipleStocks(listOf(query))
+            } else {
+                fetchMultipleStocks(defaultSymbols) // Reset to default list
+            }
+        }
+
+        fetchFavoriteStocks()
     }
 
     private fun openChartActivity(symbol: String) {
         val intent = Intent(this, ChartActivity::class.java)
-        intent.putExtra("STOCK_SYMBOL", symbol) // Pass the stock symbol to ChartActivity
+        intent.putExtra("STOCK_SYMBOL", symbol)
         startActivity(intent)
     }
 
     private fun addToFavorites(symbol: String) {
         val userId = auth.currentUser?.uid ?: return
-
-        // Add the stock symbol to the user's favoriteStocks list
         val favoriteStockRef = database.child("users").child(userId).child("favoriteStocks").child(symbol)
 
         favoriteStockRef.setValue(true)
             .addOnSuccessListener {
                 Log.d("MainActivity", "Added $symbol to favorites")
+                favoriteStocks.add(symbol)
+                stockAdapter.notifyDataSetChanged() // Refresh the adapter
             }
             .addOnFailureListener { e ->
                 Log.e("MainActivity", "Failed to add $symbol to favorites", e)
             }
+    }
+
+    private fun fetchFavoriteStocks() {
+        val userId = auth.currentUser?.uid ?: return
+        val favoriteStocksRef = database.child("users").child(userId).child("favoriteStocks")
+
+        favoriteStocksRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                favoriteStocks.clear()
+                snapshot.children.forEach { dataSnapshot ->
+                    dataSnapshot.key?.let { favoriteStocks.add(it) }
+                }
+                fetchMultipleStocks(defaultSymbols) // Fetch main stocks after getting favorites
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("MainActivity", "Failed to load favorite stocks", error.toException())
+            }
+        })
     }
 
     private fun fetchMultipleStocks(symbols: List<String>) {
@@ -124,7 +151,8 @@ class MainActivity : AppCompatActivity() {
                                 Stock(
                                     symbol = stockData.symbol ?: "",
                                     price = "$${stockData.regularMarketPrice?.raw ?: 0.0}",
-                                    changePercent = stockData.regularMarketChangePercent?.fmt ?: "0%"
+                                    changePercent = stockData.regularMarketChangePercent?.fmt ?: "0%",
+                                    isFavorite = favoriteStocks.contains(stockData.symbol)
                                 )
                             } else null
                         } else {

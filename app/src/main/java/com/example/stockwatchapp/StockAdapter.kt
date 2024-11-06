@@ -40,6 +40,13 @@ class StockAdapter(
         }
         holder.stockChangePercent.setTextColor(holder.itemView.context.getColor(color))
 
+        // Set the favorite icon based on whether the stock is a favorite
+        if (stock.isFavorite) {
+            holder.favoriteIcon.setImageResource(R.drawable.ic_favorite) // Filled heart icon
+        } else {
+            holder.favoriteIcon.setImageResource(R.drawable.ic_unfavorite) // Empty heart icon
+        }
+
         // Handle favorite icon click
         holder.favoriteIcon.setOnClickListener {
             onFavoriteClick(stock.symbol)
@@ -64,3 +71,4 @@ class StockAdapter(
         notifyDataSetChanged()
     }
 }
+
