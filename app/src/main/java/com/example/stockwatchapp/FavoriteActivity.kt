@@ -29,9 +29,25 @@ class FavoriteActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
-        favoriteAdapter = StockAdapter(emptyList()){} // Initialize adapter with an empty list
+        favoriteAdapter = StockAdapter(
+            emptyList(),
+            onFavoriteClick = { symbol ->
+                // Placeholder for favorite action, e.g., remove from favorites
+                Log.d("FavoriteActivity", "Favorite clicked for $symbol")
+            },
+            onItemClick = { symbol ->
+                // Navigate to ChartActivity with the stock symbol
+                val intent = Intent(this, ChartActivity::class.java).apply {
+                    putExtra("STOCK_SYMBOL", symbol)
+                }
+                startActivity(intent)
+            },
+            R.layout.item_stock_favoried // Pass the layout with filled heart icon
+        )
+
         binding.favoriteRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.favoriteRecyclerView.adapter = favoriteAdapter
+
         binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -55,7 +71,6 @@ class FavoriteActivity : AppCompatActivity() {
         }
         loadFavoriteStocks()
     }
-
 
     private fun loadFavoriteStocks() {
         val userId = auth.currentUser?.uid ?: return
@@ -102,8 +117,13 @@ class FavoriteActivity : AppCompatActivity() {
             val stocks = requests.awaitAll().filterNotNull()
 
             withContext(Dispatchers.Main) {
-                favoriteAdapter.updateData(stocks)
+                favoriteAdapter.updateData(stocks) // Update adapter with the fetched data
             }
         }
     }
+
+
+
+
 }
+

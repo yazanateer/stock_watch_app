@@ -21,8 +21,6 @@ import android.widget.PopupMenu
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -41,13 +39,12 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
-        // Pass the lambda to handle favorite icon clicks
-        stockAdapter = StockAdapter(emptyList()) { symbol ->
-            addToFavorites(symbol)
-        }
-
-
-
+        stockAdapter = StockAdapter(
+            emptyList(),
+            { symbol -> addToFavorites(symbol) },
+            { symbol -> openChartActivity(symbol) },
+            R.layout.item_stock // Pass the layout with empty heart icon
+        )
 
         binding.stockRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.stockRecyclerView.adapter = stockAdapter
@@ -78,8 +75,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
         fetchMultipleStocks(listOf("AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NFLX", "FB", "BRK.A", "JPM", "V"))
+    }
+
+    private fun openChartActivity(symbol: String) {
+        val intent = Intent(this, ChartActivity::class.java)
+        intent.putExtra("STOCK_SYMBOL", symbol) // Pass the stock symbol to ChartActivity
+        startActivity(intent)
     }
 
     private fun addToFavorites(symbol: String) {
@@ -127,8 +129,6 @@ class MainActivity : AppCompatActivity() {
                             } else null
                         } else {
                             Log.e("MainActivity", "Error fetching $symbol: ${response.message()}")
-                            Log.e("API Error", "Error code: ${response.code()}, message: ${response.message()}, body: ${response.errorBody()?.string()}")
-
                             null
                         }
                     } catch (e: Exception) {
@@ -141,13 +141,7 @@ class MainActivity : AppCompatActivity() {
             val results = requests.awaitAll().filterNotNull()
 
             withContext(Dispatchers.Main) {
-                stockAdapter = StockAdapter(results) { symbol ->
-                    addToFavorites(symbol)
-                }
-
-
-
-                binding.stockRecyclerView.adapter = stockAdapter
+                stockAdapter.updateData(results)
             }
         }
     }

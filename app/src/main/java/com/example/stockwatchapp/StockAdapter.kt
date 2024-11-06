@@ -7,10 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-
 class StockAdapter(
-    private var stockList: List<Stock>, // Change to var to allow reassignment
-    private val onFavoriteClick: (String) -> Unit // Callback for favorite icon click
+    private var stockList: List<Stock>,
+    private val onFavoriteClick: (String) -> Unit, // Callback for favorite icon click
+    private val onItemClick: (String) -> Unit, // Callback for item click
+    private val itemLayout: Int // Layout resource for the item view
 ) : RecyclerView.Adapter<StockAdapter.StockViewHolder>() {
 
     class StockViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -21,8 +22,7 @@ class StockAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_stock, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(itemLayout, parent, false)
         return StockViewHolder(view)
     }
 
@@ -38,13 +38,16 @@ class StockAdapter(
         } else {
             android.R.color.holo_green_dark
         }
-        holder.stockChangePercent.setTextColor(
-            holder.itemView.context.getColor(color)
-        )
+        holder.stockChangePercent.setTextColor(holder.itemView.context.getColor(color))
 
         // Handle favorite icon click
         holder.favoriteIcon.setOnClickListener {
-            onFavoriteClick(stock.symbol) // Pass the symbol to the callback
+            onFavoriteClick(stock.symbol)
+        }
+
+        // Handle item click to open ChartActivity
+        holder.itemView.setOnClickListener {
+            onItemClick(stock.symbol)
         }
     }
 
@@ -56,4 +59,3 @@ class StockAdapter(
         notifyDataSetChanged()
     }
 }
-
