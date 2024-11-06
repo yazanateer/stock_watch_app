@@ -32,6 +32,7 @@ class FavoriteActivity : AppCompatActivity() {
         favoriteAdapter = StockAdapter(
             emptyList(),
             onFavoriteClick = { symbol ->
+                removeFromFavorites(symbol)
                 // Placeholder for favorite action, e.g., remove from favorites
                 Log.d("FavoriteActivity", "Favorite clicked for $symbol")
             },
@@ -122,7 +123,21 @@ class FavoriteActivity : AppCompatActivity() {
         }
     }
 
+    private fun removeFromFavorites(symbol: String) {
+        val userId = auth.currentUser?.uid ?: return
+        val favoriteStockRef = database.child("users").child(userId).child("favoriteStocks").child(symbol)
 
+        favoriteStockRef.removeValue()
+            .addOnSuccessListener {
+                Log.d("FavoriteActivity", "Removed $symbol from favorites")
+                // Use getStockList() to get the current stock list and filter it
+                val updatedStockList = favoriteAdapter.getStockList().filter { it.symbol != symbol }
+                favoriteAdapter.updateData(updatedStockList)
+            }
+            .addOnFailureListener { e ->
+                Log.e("FavoriteActivity", "Failed to remove $symbol from favorites", e)
+            }
+    }
 
 
 }

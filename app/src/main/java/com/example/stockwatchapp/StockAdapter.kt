@@ -53,6 +53,11 @@ class StockAdapter(
 
     override fun getItemCount(): Int = stockList.size
 
+    // Method to return the current stock list
+    fun getStockList(): List<Stock> {
+        return stockList
+    }
+
     // Function to update the stock list and refresh the adapter
     fun updateData(newStockList: List<Stock>) {
         stockList = newStockList
