@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
 
     <!-- Thumbnail Image -->
     <ImageView
@@ -24,26 +26,14 @@
         android:textStyle="bold"
         android:textColor="@android:color/black" />
 
-    <!-- Summary -->
-    <TextView
-        android:id="@+id/newsSummary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/newsTitle"
-        android:layout_toEndOf="@id/newsThumbnail"
-        android:layout_marginTop="4dp"
-        android:text="This is a brief summary of the news item."
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
-        android:maxLines="2"
-        android:ellipsize="end" />
+
 
     <!-- Publish Date -->
     <TextView
         android:id="@+id/newsPubDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/newsSummary"
+        android:layout_below="@id/newsTitle"
         android:layout_toEndOf="@id/newsThumbnail"
         android:layout_marginTop="4dp"
         android:text="2024-11-02"
