@@ -20,7 +20,7 @@ class NewsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewsBinding
     private lateinit var newsAdapter: NewsAdapter
 
-    private val apiKey = "c216b2c236mshaf28311583808d1p1b1dadjsn91fa5ce0e4be"
+    private val apiKey = "a8f082be84msh919306b183bdd3ap1f909ejsnae45b71ef880"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

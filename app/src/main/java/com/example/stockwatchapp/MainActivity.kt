@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var stockAdapter: StockAdapter
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
-    private val apiKey = "c216b2c236mshaf28311583808d1p1b1dadjsn91fa5ce0e4be"
+    private val apiKey = "a8f082be84msh919306b183bdd3ap1f909ejsnae45b71ef880"
     private val defaultSymbols = listOf("AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NFLX", "FB", "BRK.A", "JPM", "V")
     private var favoriteStocks = mutableSetOf<String>()
 
