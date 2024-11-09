@@ -18,5 +18,8 @@ data class Indicators(
 )
 
 data class Quote(
-    val close: List<Double?>
+    val open: List<Double?>,
+    val close: List<Double?>,
+    val high: List<Double?>,
+    val low: List<Double?>
 )
