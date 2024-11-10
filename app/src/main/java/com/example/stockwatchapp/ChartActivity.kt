@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.stockwatchapp.databinding.ActivityChartBinding
 import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
@@ -67,7 +68,7 @@ class ChartActivity : AppCompatActivity() {
             .build()
 
         val api = retrofit.create(ChartApi::class.java)
-        api.getChartData(symbol, "US", "1d", "5m", apiKey).enqueue(object : Callback<ChartResponse> {
+        api.getChartData(symbol, "US", "1mo", "1h", apiKey).enqueue(object : Callback<ChartResponse> {
             override fun onResponse(call: Call<ChartResponse>, response: Response<ChartResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.let { chartResponse ->
@@ -123,8 +124,8 @@ class ChartActivity : AppCompatActivity() {
         candleDataSet.increasingPaintStyle = Paint.Style.FILL
         candleDataSet.neutralColor = getColor(R.color.gray)
         candleDataSet.shadowColorSameAsCandle = true
-        candleDataSet.shadowWidth = 1.5f
-        candleDataSet.barSpace = 0.1f
+        candleDataSet.shadowWidth = 0f
+        candleDataSet.barSpace = 0.05f
 
 
         val candleData = CandleData(candleDataSet)
@@ -135,14 +136,28 @@ class ChartActivity : AppCompatActivity() {
         description.textColor = getColor(R.color.white)
         candleStickChart.description = description
 
-        // Format X-Axis to show date and time
-        candleStickChart.xAxis.valueFormatter = object : ValueFormatter() {
+        val xAxis = candleStickChart.xAxis
+        xAxis.isEnabled = true
+        xAxis.setDrawLabels(true) // Ensure labels are drawn
+        xAxis.position = XAxis.XAxisPosition.BOTTOM // Set position at the bottom
+        xAxis.textColor = getColor(R.color.white) // Set text color for visibility
+
+// Format X-Axis to show date and time
+        xAxis.valueFormatter = object : ValueFormatter() {
             private val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
             override fun getFormattedValue(value: Float): String {
                 return dateFormat.format(Date(value.toLong()))
             }
         }
+
+// Enable Y-axis labels and configure them
+        val yAxisLeft = candleStickChart.axisLeft
+        yAxisLeft.isEnabled = true
+        yAxisLeft.textColor = getColor(R.color.white) // Set text color for visibility
+
+        val yAxisRight = candleStickChart.axisRight
+        yAxisRight.isEnabled = false // Optionally hide the right Y-axis if not needed
 
         candleStickChart.invalidate() // Refresh the chart
     }
