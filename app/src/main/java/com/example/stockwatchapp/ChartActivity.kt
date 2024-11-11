@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,12 +25,16 @@ import java.util.*
 class ChartActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChartBinding
-    private val apiKey = "a8f082be84msh919306b183bdd3ap1f909ejsnae45b71ef880"
+    private val apiKey = "2fb648d91emshe0554b6bb9ea674p192e08jsnf75517adf13f"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChartBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        val bottomNavigationView: BottomNavigationView = binding.bottomNavigation
+        bottomNavigationView.selectedItemId = R.id.nav_chart
 
         val candleStickChart = binding.lineChart as CandleStickChart
 
@@ -116,20 +121,22 @@ class ChartActivity : AppCompatActivity() {
             }
         }
 
-
         val candleDataSet = CandleDataSet(entries, "$symbol Stock Data")
+        candleDataSet.color = getColor(R.color.white)
         candleDataSet.decreasingColor = getColor(R.color.red)
-        candleDataSet.decreasingPaintStyle = Paint.Style.FILL
+        candleDataSet.decreasingPaintStyle = Paint.Style.STROKE // Use stroke for bar appearance
         candleDataSet.increasingColor = getColor(R.color.green)
-        candleDataSet.increasingPaintStyle = Paint.Style.FILL
+        candleDataSet.increasingPaintStyle = Paint.Style.STROKE // Use stroke for bar appearance
         candleDataSet.neutralColor = getColor(R.color.gray)
-        candleDataSet.shadowColorSameAsCandle = true
-        candleDataSet.shadowWidth = 0f
-        candleDataSet.barSpace = 0.05f
-
+        candleDataSet.shadowColorSameAsCandle = false // Don't display shadows
+        candleDataSet.shadowWidth = 0f // Remove shadow lines
+        candleDataSet.barSpace = 0.02f // Adjust bar space for width
 
         val candleData = CandleData(candleDataSet)
         candleStickChart.data = candleData
+
+
+
 
         val description = Description()
         description.text = "$symbol Stock Data"
@@ -142,7 +149,7 @@ class ChartActivity : AppCompatActivity() {
         xAxis.position = XAxis.XAxisPosition.BOTTOM // Set position at the bottom
         xAxis.textColor = getColor(R.color.white) // Set text color for visibility
 
-// Format X-Axis to show date and time
+        // Format X-Axis to show date and time
         xAxis.valueFormatter = object : ValueFormatter() {
             private val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
@@ -151,7 +158,7 @@ class ChartActivity : AppCompatActivity() {
             }
         }
 
-// Enable Y-axis labels and configure them
+        // Enable Y-axis labels and configure them
         val yAxisLeft = candleStickChart.axisLeft
         yAxisLeft.isEnabled = true
         yAxisLeft.textColor = getColor(R.color.white) // Set text color for visibility

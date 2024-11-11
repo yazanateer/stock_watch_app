@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stockwatchapp.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var stockAdapter: StockAdapter
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
-    private val apiKey = "a8f082be84msh919306b183bdd3ap1f909ejsnae45b71ef880"
+    private val apiKey = "2fb648d91emshe0554b6bb9ea674p192e08jsnf75517adf13f"
     private val defaultSymbols = listOf("AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NFLX", "FB", "BRK.A", "JPM", "V")
     private var favoriteStocks = mutableSetOf<String>()
 
@@ -82,8 +84,8 @@ class MainActivity : AppCompatActivity() {
                 fetchMultipleStocks(defaultSymbols) // Reset to default list
             }
         }
-
         fetchFavoriteStocks()
+        fetchUserName()
     }
 
     private fun openChartActivity(symbol: String) {
@@ -192,4 +194,28 @@ class MainActivity : AppCompatActivity() {
         }
         popupMenu.show()
     }
+
+
+    private fun fetchUserName() {
+        val userId = auth.currentUser?.uid ?: return
+        val userRef = database.child("users").child(userId).child("name")
+
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val username = snapshot.getValue(String::class.java)
+                if (username != null) {
+                    binding.welcomeUserText.text = "Welcome, $username"
+                } else {
+                    binding.welcomeUserText.text = "Welcome, user"
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("MainActivity", "Error fetching the username form the database")
+                binding.welcomeUserText.text = "Welcome, user"
+            }
+        })
+    }
+
+
 }

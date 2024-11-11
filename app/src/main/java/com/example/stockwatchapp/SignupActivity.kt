@@ -97,4 +97,5 @@ class SignupActivity : AppCompatActivity() {
             finish()
         }
     }
+
 }

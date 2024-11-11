@@ -9,6 +9,7 @@ import com.example.stockwatchapp.NewsAdapter
 import com.example.stockwatchapp.NewsApi
 import com.example.stockwatchapp.NewsResponse
 import com.example.stockwatchapp.databinding.ActivityNewsBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,12 +21,15 @@ class NewsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewsBinding
     private lateinit var newsAdapter: NewsAdapter
 
-    private val apiKey = "a8f082be84msh919306b183bdd3ap1f909ejsnae45b71ef880"
+    private val apiKey = "2fb648d91emshe0554b6bb9ea674p192e08jsnf75517adf13f"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val bottomNavigationView: BottomNavigationView = binding.bottomNavigation
+        bottomNavigationView.selectedItemId = R.id.nav_news
 
         newsAdapter = NewsAdapter(emptyList())
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(this)

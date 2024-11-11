@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stockwatchapp.databinding.ActivityFavoriteBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.coroutines.*
@@ -19,12 +20,15 @@ class FavoriteActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
 
-    private val apiKey = "a8f082be84msh919306b183bdd3ap1f909ejsnae45b71ef880"
+    private val apiKey = "2fb648d91emshe0554b6bb9ea674p192e08jsnf75517adf13f"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val bottomNavigationView: BottomNavigationView = binding.bottomNavigation
+        bottomNavigationView.selectedItemId = R.id.nav_favorite
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
@@ -33,7 +37,6 @@ class FavoriteActivity : AppCompatActivity() {
             emptyList(),
             onFavoriteClick = { symbol ->
                 removeFromFavorites(symbol)
-                // Placeholder for favorite action, e.g., remove from favorites
                 Log.d("FavoriteActivity", "Favorite clicked for $symbol")
             },
             onItemClick = { symbol ->
