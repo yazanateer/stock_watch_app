@@ -5,7 +5,9 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.stockwatchapp.api.ChartApi
 import com.example.stockwatchapp.databinding.ActivityChartBinding
+import com.example.stockwatchapp.model.ChartResponse
 import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis

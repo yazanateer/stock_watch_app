@@ -1,4 +1,4 @@
-package com.example.stockwatchapp
+package com.example.stockwatchapp.model
 
 data class StockResponse(
     val quoteResponse: QuoteResponse

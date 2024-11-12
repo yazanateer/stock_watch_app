@@ -11,11 +11,11 @@
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="#1c1f26"
+        android:layout_height="@dimen/height_header"
+        android:background="@color/header_background"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="16dp">
+        android:padding="@dimen/header_padding">
 
         <!-- Title Text -->
         <TextView

@@ -1,4 +1,4 @@
-package com.example.stockwatchapp
+package com.example.stockwatchapp.adapters
 
 import android.content.Intent
 import android.net.Uri
@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.stockwatchapp.model.NewsItem
+import com.example.stockwatchapp.R
 
 class NewsAdapter(private var newsList: List<NewsItem>) :
     RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {

@@ -1,4 +1,4 @@
-package com.example.stockwatchapp
+package com.example.stockwatchapp.model
 
 data class ChartResponse(
     val chart: Chart

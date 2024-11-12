@@ -1,4 +1,4 @@
-package com.example.stockwatchapp
+package com.example.stockwatchapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.stockwatchapp.R
+import com.example.stockwatchapp.model.Stock
 
 class StockAdapter(
     private var stockList: List<Stock>,

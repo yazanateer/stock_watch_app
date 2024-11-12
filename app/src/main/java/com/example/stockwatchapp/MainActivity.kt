@@ -9,11 +9,12 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stockwatchapp.adapters.StockAdapter
+import com.example.stockwatchapp.api.StockApi
 import com.example.stockwatchapp.databinding.ActivityMainBinding
+import com.example.stockwatchapp.model.Stock
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

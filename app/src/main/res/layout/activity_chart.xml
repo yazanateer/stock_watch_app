@@ -10,11 +10,11 @@
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="#1c1f26"
+        android:layout_height="@dimen/height_header"
+        android:background="@color/header_background"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="16dp">
+        android:padding="@dimen/header_padding">
 
         <!-- Title -->
         <TextView
@@ -22,11 +22,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Stock Chart"
-            android:textSize="20sp"
+            android:textSize="20dp"
             android:textColor="#FFFFFF" />
     </LinearLayout>
 
-    <!-- Candle Stick Chart View -->
+    <!-- CandleStick Chart View -->
     <com.github.mikephil.charting.charts.CandleStickChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"

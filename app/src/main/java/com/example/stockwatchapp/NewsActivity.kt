@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.stockwatchapp.NewsAdapter
-import com.example.stockwatchapp.NewsApi
-import com.example.stockwatchapp.NewsResponse
+import com.example.stockwatchapp.adapters.NewsAdapter
+import com.example.stockwatchapp.api.NewsApi
 import com.example.stockwatchapp.databinding.ActivityNewsBinding
+import com.example.stockwatchapp.model.NewsResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback

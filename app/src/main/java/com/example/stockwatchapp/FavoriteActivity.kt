@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stockwatchapp.adapters.StockAdapter
+import com.example.stockwatchapp.api.StockApi
 import com.example.stockwatchapp.databinding.ActivityFavoriteBinding
+import com.example.stockwatchapp.model.Stock
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
