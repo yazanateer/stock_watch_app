@@ -3,6 +3,7 @@ package com.example.stockwatchapp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stockwatchapp.adapters.StockAdapter
@@ -137,6 +138,11 @@ class FavoriteActivity : AppCompatActivity() {
         favoriteStockRef.removeValue()
             .addOnSuccessListener {
                 Log.d("FavoriteActivity", "Removed $symbol from favorites")
+                Toast.makeText(
+                    this,
+                    "$symbol removed from favorites",
+                    Toast.LENGTH_SHORT
+                ).show()
                 // Use getStockList() to get the current stock list and filter it
                 val updatedStockList = favoriteAdapter.getStockList().filter { it.symbol != symbol }
                 favoriteAdapter.updateData(updatedStockList)

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.stockwatchapp.adapters.StockAdapter
@@ -102,6 +103,11 @@ class MainActivity : AppCompatActivity() {
         favoriteStockRef.setValue(true)
             .addOnSuccessListener {
                 Log.d("MainActivity", "Added $symbol to favorites")
+                Toast.makeText(
+                    this,
+                    "Added $symbol to favorites",
+                    Toast.LENGTH_SHORT
+                ).show()
                 favoriteStocks.add(symbol)
                 stockAdapter.notifyDataSetChanged() // Refresh the adapter
             }
@@ -137,7 +143,7 @@ class MainActivity : AppCompatActivity() {
                 .build()
 
             val stockApi = retrofit.create(StockApi::class.java)
-            val stockList = mutableListOf<Stock>()
+
 
             val requests = symbols.map { symbol ->
                 async {

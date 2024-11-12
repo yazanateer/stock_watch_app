@@ -132,7 +132,8 @@ class ChartActivity : AppCompatActivity() {
         candleDataSet.neutralColor = getColor(R.color.gray)
         candleDataSet.shadowColorSameAsCandle = false // Don't display shadows
         candleDataSet.shadowWidth = 0f // Remove shadow lines
-        candleDataSet.barSpace = 0.02f // Adjust bar space for width
+        candleDataSet.barSpace = 1.2f // Adjust bar space for width
+        candleDataSet.formLineWidth = 3.5f
 
         val candleData = CandleData(candleDataSet)
         candleStickChart.data = candleData
@@ -166,7 +167,10 @@ class ChartActivity : AppCompatActivity() {
         yAxisLeft.textColor = getColor(R.color.white) // Set text color for visibility
 
         val yAxisRight = candleStickChart.axisRight
-        yAxisRight.isEnabled = false // Optionally hide the right Y-axis if not needed
+        yAxisRight.isEnabled = true // Optionally hide the right Y-axis if not needed
+        yAxisRight.textColor = getColor(R.color.white)
+
+
 
         candleStickChart.invalidate() // Refresh the chart
     }
