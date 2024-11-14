@@ -24,7 +24,7 @@ class FavoriteActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
 
-    private val apiKey = "2fb648d91emshe0554b6bb9ea674p192e08jsnf75517adf13f"
+    private val apiKey = "879e4beac3mshca50202beb6d4dep1745d3jsna7991a62b9c9"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
